@@ -6,16 +6,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <meta name="viewport" content="width=device-width" />
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta name="viewport" content="width=device-width"/>
     <title>Test CORS</title>
 </head>
 <body>
     <h1>Selamat Datang</h1>
 </body>
 </html>
-<script>  
-    $.ajax({
+
+<script>
+    $.ajak({
         url: "https://localhost:44372/api/employees/TestCORS",
         success: function (result) {
             console.log(result);
