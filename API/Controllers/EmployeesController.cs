@@ -48,7 +48,8 @@ namespace API.Controllers
                 return Conflict(new { status = "GAGAL", cek, message = "Email yang anda masukan sudah terdaftar, harap masukan e-mail yang belum terdaftar" });
             }
 
-            return Ok(new { status = "SUKSES", cek, message ="Data berhasil ditambahkan" });
+            //return Ok(new { status = "SUKSES", cek, message ="Data berhasil ditambahkan" });
+            return Ok(cek);
         }
         //API GET
         [HttpGet]
@@ -58,12 +59,22 @@ namespace API.Controllers
             if (getAllData != 0)
             {
                 var tampilData = employeeRepository.Get();
-                return Ok(new { status = HttpStatusCode.OK, tampilData });
+                //return Ok(new { status = HttpStatusCode.OK, tampilData });
+                return Ok(tampilData);
             }
             else
             {
-                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data tidak ada yang ditampilkan, Harap masukkan data terlebih dahulu!" });
+                //return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data tidak ada yang ditampilkan, Harap masukkan data terlebih dahulu!" });
+                return NotFound();
             }
+            //if (result != null)
+            //{
+            //    return Ok(result);
+            //}
+            //else
+            //{
+            //    return NotFound(result);
+            //}
         }
 
         //API GET BY ID
@@ -79,8 +90,8 @@ namespace API.Controllers
         }
 
         //API UPDATE
-        [HttpPut("{NIK}")]
-        public ActionResult <Employee>Put(string NIK, Employee employee)
+        [HttpPut]
+        public ActionResult<Employee> Put(string NIK, Employee employee)
         {
             //4
             var update = employeeRepository.Update(employee);
@@ -99,6 +110,18 @@ namespace API.Controllers
             return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data Gagal diupdate" });
         }
 
+        [HttpPut]
+        [Route("UpdateRegisterData")]
+        public ActionResult<Employee> UpdateRegisterData(RegisterVM registerVM)
+        {
+            var result = employeeRepository.UpdateRegisterData(registerVM);
+            if (result != null)
+            {
+                return Ok(new { status = HttpStatusCode.OK, result, message = "Data berhasil diupdate!!" });
+            }
+            return NotFound(new { status = HttpStatusCode.NotFound, message = "Error" });
+        } 
+
         //API DELETE
         [HttpDelete("{NIK}")]
         public ActionResult Delete (string NIK)
@@ -109,6 +132,13 @@ namespace API.Controllers
                 return Ok(new { status = HttpStatusCode.OK, Delete, message= $"Data Employee {NIK} berhasil dihapus"});
             }
             return NotFound(new { status = HttpStatusCode.NotFound, Delete, message = $"Data Employee {NIK} tidak ditemukan" });
+        }
+
+        [HttpGet("CountEmployeeBySalary")]
+        public ActionResult CountEmployeeBySalary()
+        {
+            var result = employeeRepository.CountEmployeeBySalary();
+            return Ok(new { status = HttpStatusCode.OK, result, Message = "Data berhasil diambil" });
         }
 
         //API GET ALL DATA BY NEW METHOD

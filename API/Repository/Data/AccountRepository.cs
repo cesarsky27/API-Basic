@@ -28,21 +28,22 @@ namespace API.Repository.Data
             try
             {
                 var cekEmail = myContext.Employees.Where(e => e.Email == loginVM.Email).FirstOrDefault();
-                var cekPhone = myContext.Employees.Where(e => e.Phone == loginVM.Phone).FirstOrDefault();
+                //var cekPhone = myContext.Employees.Where(e => e.Phone == loginVM.Phone).FirstOrDefault();
 
 
                 if (cekEmail != null)
-                    if (cekEmail != null || cekPhone != null)
+                    //if (cekEmail != null || cekPhone != null)
+                    if(cekEmail != null)
                     {
                         var NIK = (from e in myContext.Set<Employee>()
                                    where e.Email == loginVM.Email
-                                   where e.Email == loginVM.Email || e.Phone == loginVM.Phone
+                                   //where e.Email == loginVM.Email || e.Phone == loginVM.Phone
                                    select e.NIK).Single();
 
                         cekPassword = (from e in myContext.Set<Employee>()
                                        join a in myContext.Set<Account>() on e.NIK equals a.NIK
                                        where e.Email == loginVM.Email
-                                       where e.Email == loginVM.Email || e.Phone == loginVM.Phone
+                                       //where e.Email == loginVM.Email || e.Phone == loginVM.Phone
                                        select a.Password).Single();
 
                         var passTry = Hashing.ValidatePassword(loginVM.Password, cekPassword);

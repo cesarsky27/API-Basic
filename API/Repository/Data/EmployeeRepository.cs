@@ -20,7 +20,18 @@ namespace API.Repository.Data
 
         public int Register(RegisterVM registerVM)
         {
-            int increment = myContext.Employees.ToList().Count + 1;
+            int increment = myContext.Employees.ToList().Count;
+            string NIK = "";
+            if (increment == 0)
+            {
+                NIK = DateTime.Now.ToString("yyyy") + "0" + increment.ToString();
+            }
+            else
+            {
+                string increment2 = myContext.Employees.ToList().Max(e=> e.NIK);
+                int formula = Int32.Parse(increment2) + 1;
+                NIK = formula.ToString();
+            }
             //string NIK = DateTime.Now.ToString("yyyy") + "0" + increment.ToString();
             var cekNIK = myContext.Employees.Find(registerVM.NIK);
             var cekPhone = myContext.Employees.Where(p => p.Phone == registerVM.Phone).FirstOrDefault();
@@ -42,7 +53,8 @@ namespace API.Repository.Data
             {
                 //int increment =myContext.Employees.ToList().Count;              
                 //NIK = DateTime.Now.ToString("yyyymmddHHmmss"),
-                NIK = DateTime.Now.ToString("yyyy") + "0" + increment.ToString(),
+                NIK = NIK,
+                //NIK = DateTime.Now.ToString("yyyy") + "0" + increment.ToString(),
                 FirstName = registerVM.FirstName,
                 LastName = registerVM.LastName,
                 Phone = registerVM.Phone,
@@ -86,8 +98,31 @@ namespace API.Repository.Data
                 NIK = e.NIK,
                 EducationID = ed.EducationID
             };
+            myContext.Profillings.Add(p);
+            myContext.SaveChanges();
 
             return 0;
+        }
+
+        public int UpdateRegisterData(RegisterVM registerVM)
+        {
+            var employee = new Employee
+            {
+                NIK = registerVM.NIK,
+                FirstName = registerVM.FirstName,
+                LastName = registerVM.LastName,
+                Phone = registerVM.Phone,
+                BirthDate = registerVM.BirthDate,
+                Salary = registerVM.Salary,
+                Gender = registerVM.Gender,
+                Email = registerVM.Email
+            };
+            myContext.Entry(employee).State = EntityState.Modified;
+            myContext.SaveChanges();
+
+            var result = myContext.SaveChanges();
+
+            return result;
         }
 
         public IEnumerable GetRegisteredData()
@@ -115,6 +150,20 @@ namespace API.Repository.Data
                           };
             return getData.ToList();
             }
+
+        public IEnumerable<CountEmployeeBySalaryVM> CountEmployeeBySalary()
+        {
+
+            var result = (from e in myContext.Employees
+                          group e by new { e.Salary } into Group
+                          select new CountEmployeeBySalaryVM
+                          {
+                              Salary = Group.Key.Salary,
+                              Value = Group.Count()
+                          });
+
+            return result.ToList();
+        }
             
         //Include
             //public IEnumerable GetRegisteredData2()

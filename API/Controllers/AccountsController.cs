@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -39,15 +40,17 @@ namespace API.Controllers
             var result = accountRepository.Login(loginVM);
             if (result == "2")
             {
-                return NotFound(new { status = StatusCodes.Status400BadRequest, result, message = "Password Salah" });
+                //return NotFound(new JWTokenVM{ status = (HttpStatusCode)StatusCodes.Status400BadRequest, idToken = null, Messages = "Password Salah" });
+                //return Ok(new JWTokenVM { status = HttpStatusCode.OK, idToken = idToken, Messages = "Successful login" });
+                return BadRequest(new JWTokenVM { status = HttpStatusCode.BadRequest, idToken = null, Messages = "Error" });
             }
             else if (result == "0")
             {
-                return NotFound(new { status = StatusCodes.Status404NotFound, result, message = "Login Gagal" });
+                return BadRequest(new JWTokenVM { status = HttpStatusCode.BadGateway, idToken = null, Messages = "Gateway Error" });
             }
             else if (result == "3")
             {
-                return NotFound(new { status = StatusCodes.Status204NoContent, result, message = "Email yang anda masukan salah atau tidak terdaftar!" });
+                return BadRequest(new JWTokenVM { status = HttpStatusCode.NotFound, idToken = null, Messages = "Error 404" });
             }
             else
             {
@@ -80,7 +83,8 @@ namespace API.Controllers
                         expires: DateTime.UtcNow.AddMinutes(10), signingCredentials: signIn);
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
-                    return Ok(new { status = StatusCodes.Status200OK, idToken, message = "Success Login" });
+                    //return Ok(new { status = StatusCodes.Status200OK, idToken, message = "Success Login" });
+                    return Ok(new JWTokenVM { status = HttpStatusCode.OK, idToken = idToken, Messages = "Successful login" });
 
                 }
             }
@@ -144,43 +148,3 @@ namespace API.Controllers
         }
     }
 }
-
-
-
-        //COBA-2 BISA
-        //[HttpPost("Login")]
-        //public ActionResult Login(LoginVM loginVM)
-        //{
-        //    var code = 0;
-        //    var message = "";
-        //    var result = accountRepository.Login(loginVM);
-
-        //    switch (result)
-        //    {
-        //        case 1:
-        //            {
-        //                code = StatusCodes.Status200OK;
-        //                message = $"Login Berhasil";
-        //                break;
-        //            }
-        //        case 2:
-        //            {
-        //                code = StatusCodes.Status400BadRequest;
-        //                message = $"Password Salah";
-        //                break;
-        //            }
-        //        case 3:
-        //            {
-        //                code = StatusCodes.Status404NotFound;
-        //                message = $"Email Not Found";
-        //                break;
-        //            }
-        //        default:
-        //            {
-        //                code = StatusCodes.Status400BadRequest;
-        //                message = $"Login Gagal";
-        //                break;
-        //            }
-        //    }
-        //    return Ok(new { code, result, message });
-        //}

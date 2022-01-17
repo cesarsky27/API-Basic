@@ -1,0 +1,324 @@
+﻿$(document).ready(function () {
+    getUniversity();
+    tableEmployee = $("#table_id").DataTable({
+        "ajax": {
+            "url": "https://localhost:44372/API/Employees/GetAllData",
+            "dataType": 'json',
+            "dataSrc": ''
+        },
+        'columns': [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                'data': 'nik'
+            },
+            {
+                'data': 'firstName'
+            },
+            { 'data': 'lastName' },
+            {
+                'data': null,
+                "render": function (data, type, row) {
+                    return `${row['firstName']} ${row['lastName']}`;
+                }
+            },
+            { 'data': 'phone' },
+            {
+                'data': null,
+                'render': (data, type, row) => {
+                    var dataGet = new Date(row['birthDate']);
+                    return dataGet.toLocaleDateString();
+                }
+            },
+            { 'data': 'email' },
+            { 'data': 'gender' },
+            {
+                "data": null,
+                "render": function (data, type, row) {
+                    return `<button type="button" class="btn btn-primary" onclick="getData(${row["nik"]})" data-toggle="modal" data-target="#employeeDetailModal">
+                              <i class="fas fa-search"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="Update(${row["nik"]})" data-toggle="modal" data-target="#EmployeeEditModal">
+                              <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="Delete(${row["nik"]})" data-toggle="modal">
+                              <i class="fas fa-trash"></i>
+                            </button >`;
+                }
+            }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                text: '<i class="fas fa-copy color1"> Copy</i>',
+                className: 'btn btn-outline-secondary',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'csv',
+                text: '<i class="fas fa-file-csv color2"> CSV</i>',
+                className: 'btn btn-outline-secondary',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel color3"> Excel</i>',
+                className: 'btn btn-outline-secondary',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fas fa-file-pdf color4"> PDF</i>',
+                className: 'btn btn-outline-secondary',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print color5"> Print</i>',
+                className: 'btn btn-outline-secondary',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            }
+        ]
+    });
+});
+
+function Insert(callback) {
+    //1
+    var obj = new Object();
+
+    /*obj.NIK = $("#NIK").val();*/
+    obj.FirstName = $("#FirstName").val();
+    obj.LastName = $("#LastName").val();
+    obj.Phone = $("#Phone").val();
+    obj.BirthDate = $("#BirthDate").val();
+    obj.Salary = $("#Salary").val();
+    obj.Gender = $("#Gender").val();
+    obj.UniversityName = $("#UniversityName").val();
+    obj.GPA = $("#GPA").val();
+    obj.Degree = $("#Degree").val();
+    obj.Email = $("#Email").val();
+    obj.Password = $("#Password").val();
+    obj.UniversityID = $("#UniversityID").val();
+
+    console.log(JSON.stringify(obj));
+
+    $.ajax({
+        url: "https://localhost:44372/API/Employees/Register",
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        dataType: 'json',
+        data: JSON.stringify(obj),
+        success: callback
+    }).done((result) => {
+        Swal.fire(
+            'Yeayy',
+            result.messageResult,
+            'success'
+        )
+        tableEmployee.ajax.reload();
+        $('#EmployeeInsertModal').modal('hide');
+    }).fail((error) => {
+        //alert pemberitahuan jika gagal
+        Swal.fire(
+            'Opps!',
+            'Sepertinya terjadi kesalahan, periksa kembali!',
+            'error'
+        )
+    });
+
+}
+
+function Delete(nik) {
+    Swal.fire({
+        title: 'Yakin ingin dihapus?',
+        text: "Data akan dihapus dari database.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yakieen dong!',
+        cancelButtonText: 'Engga jadi'
+
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "https://localhost:44372/API/Employees/" + nik,
+                type: "DELETE",
+                crossDomain: true,
+            }).done((result) => {
+                Swal.fire(
+                    'Yeayy',
+                    result.messageResult,
+                    'success'
+                )
+                tableEmployee.ajax.reload();
+                //$('.createEmployee').modal('hide');
+
+            }).fail((error) => {
+
+                Swal.fire(
+                    'Opps!',
+                    'Sepertinya terjadi kesalahan, periksa kembali!',
+                    'error'
+                )
+            })
+        }
+    })
+}
+
+function getData(nik) {
+    $.ajax({
+        url: "https://localhost:44372/API/Employees/GetAllData" + nik
+    }).done((result) => {
+        $("#table_id").html(text);
+        console.log(result)
+        var text = ''
+        text = `<div class = "text-center">
+                    <table class= "table bg-light table-hover text-info text-center">
+                        <tr>
+                            <td>Name</td>
+                            <td>:</td>
+                            <td>${result.firstName} ${result.LastName}</td>
+                        </tr>
+                        <tr>
+                            <td>BirthDate</td>
+                            <td>:</td>
+                            <td>${result.BirthDate}</td>
+                        </tr>
+                        <tr>
+                            <td>Salary</td>
+                            <td>:</td>
+                            <td>Rp. ${result.Salary}</td>
+                        </tr>
+                    </table>
+                    </div>`
+        $('#EmployeeDetailModal-body').html(text).css('background-color', 'white');
+    }).fail((error) => {
+        console.log(error);
+    });
+}
+
+function Update() {
+    var obj = new Object();
+    obj.nik = $("#NIKedit").val();
+    obj.firstName = $("#FirstNameedit").val();
+    obj.lastName = $("#LastNameedit").val();
+    obj.email = $("#Emailedit").val();
+    obj.phone = $("#Phoneedit").val();
+    obj.birthDate = $("#BirthDateedit").val();
+    obj.salary = $("#Salaryedit").val();
+    obj.gender = $("#Genderedit").val();
+    console.log(JSON.stringify(obj));
+
+    $.ajax({
+        /*headers: {
+            /// 'Accept': 'application/json',/
+            'Content-Type': 'application/json'
+        },*/
+        url: "https://localhost:44372/API/Employees/UpdateRegisterData",
+        type: "PUT",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        /*dataType: 'json',*/
+        data: obj
+    }).done((result) => {
+        //buat alert pemberitahuan jika success
+
+        alert(result.messageResult)
+        Swal.fire(
+            'Yeayy',
+            result.messageResult,
+            'success'
+        )
+        //tableEmployee.ajax.reload();
+        $('#EmployeeEditModal').modal('hide');
+
+    }).fail((error) => {
+
+        Swal.fire(
+            'Opps!',
+            'Sepertinya terjadi kesalahan, periksa kembali!',
+            'error'
+        )
+        //alert pemberitahuan jika gagal
+    });
+}
+
+$('#EmployeeInsertModal').on('show.bs.modal', function () {
+    console.log("test");
+    
+});
+function getUniversity() {
+    $.ajax({
+        url: 'https://localhost:44372/API/Universities'
+    }).done((data) => {
+        console.log(data);
+        var universitySelect = '';
+        $.each(data, function (key, val) {
+            universitySelect += `<option value='${val.universityID}'>${val.universityName}</option>`
+        });
+        $("#UniversityID").html(universitySelect);
+
+    }).fail((error) => {
+        console.log(error);
+    })
+}
+
+function closeModal() {
+    $('#EmployeeInsertModal').modal('hide');
+}
+
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        var table = $('#tableEmployee').DataTable();
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                else {
+                    Insert();
+                    $('#EmployeeInsertModal').modal('hide');
+                    table.ajax.reload();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+        //Swal.fire(
+        //    'Opps!',
+        //    'Sepertinya terjadi kesalahan, periksa kembali!',
+        //    'error'
+        //)
+        //Swal
+/*alert(result.messageResult)*/
+//        Swal.fire(
+//            'Yeayy',
+//            result.messageResult,
+//            'success'
+//        )
+//tableEmployee.ajax.reload();

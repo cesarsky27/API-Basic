@@ -1,0 +1,289 @@
+﻿
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "_LayoutAdmin2";
+}
+<div>
+    <center><h1 class="titleKaryawan"> Table Employee </h1></center>
+    <button type="button" class="buttonAdd" data-toggle="modal" data-target="#EmployeeInsertModal"> <i class="fas fa-user-plus"></i> Tambah Karyawan</button>
+    <table id="table_id" class="display nowrap tableEmployee" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center" data-field="no" data-sortable="true">NO</th>
+                <th scope="col" class="text-center" data-field="nik" data-sortable="true">NIK</th>
+                <th scope="col" class="text-center" data-field="fullName" data-sortable="true">First Name</th>
+                <th scope="col" class="text-center" data-field="lastName" data-sortable="true">Last Name</th>
+                <th scope="col" class="text-center" data-field="fullName" data-sortable="true">Full Name</th>
+                <th scope="col" class="text-center" data-field="phone" data-sortable="true">Phone</th>
+                <th scope="col" class="text-center" data-field="birthDate" data-sortable="true">Birth Date</th>
+                <th scope="col" class="text-center" data-field="email" data-sortable="true">Email</th>
+                <th scope="col" class="text-center" data-field="gender" data-sortable="true">Gender</th>
+                <th scope="col" class="text-center" data-field="action" data-sortable="true">Action</th>
+            </tr>
+        </thead>
+        <tbody class=" text-center " id="listEmployee">
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div id="CountEmployeeByUniversity">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div id="CountEmployeeBySalary"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="EmployeeInsertModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeInsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Insert Employee Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="FirstName">First Name</label>
+                            <input type="text" class="form-control" id="FirstName" name="firstName" placeholder="First Name" required>
+                            <div class="invalid-feedback">
+                                First Name tidak boleh kosong
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LastName">Last Name</label>
+                            <input type="text" class="form-control" id="LastName" name="lastName" placeholder="Last Name" required>
+                            <div class="invalid-feedback">
+                                Last name tidak boleh kosong
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Phone">Phone</label>
+                            <input type="number" class="form-control" id="Phone" name="phone" placeholder="08xxxxx" required>
+                            <div class="invalid-feedback">
+                                Nomor Telepon tidak boleh kosong
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="BirthDate">BirthDate</label>
+                            <input type="date" class="form-control" id="BirthDate" name="birthDate" placeholder="BirthDate" required>
+                            <div class="invalid-feedback">
+                                Tanggal lahir tidak boleh kosong
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Salary">Salary</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input type="number" class="form-control" name="salary" id="Salary" required>
+                                <div class="invalid-feedback">
+                                    Salary tidak boleh kosong
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="Gender">Gender</label>
+                            <select id="Gender" name="gender" class="custom-select mr-sm-1" required>
+                                <option value="">Choose...</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Gender tidak boleh kosong
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-row">
+                        <div class="form-group col-md-6">
+                            <label for="UniversityID"> University</label>
+                            <select id="UniversityID" class="form-control">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="gpa">GPA/IPK</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+
+                                </div>
+                                <input type="number" step="0.01" class="form-control" name="gpa" id="GPA" required>
+                                <div class="invalid-feedback">
+                                    GPA Wajib diisi!!!
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Degree" class="form-label">Degree</label>
+                        <select name="degree" id="Degree" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>Bachelor</option>
+                            <option>Master</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="Email" placeholder="Example@gmail.com" required>
+                        <div class="invalid-feedback">
+                            Email harus diisi !!!
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Password-1">Password</label>
+                        <input type="password" class="form-control" id="Password" placeholder="Password" required>
+                        <div class="invalid-feedback">
+                            Password harus diisi!!!
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <button type="submit" class="btn btn-primary" id="btnAdd" onclick="Insert()">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="employeeDetailModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Employee Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="EmployeeDetailModal-body" class="modal-body">                     ...                 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EmployeeEditModal" tabindex="-1" role="dialog" aria-labelledby="EmployeeEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Edit Employee Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+
+                    <div class="form-group">
+                        <label for="NIK">NIK</label>
+                        <input type="text" class="form-control" id="NIKedit" name="nik" placeholder="NIK" required>
+                        <div class="invalid-feedback">
+                            NIK nya isi !!!
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="FirstName">First Name</label>
+                            <input type="text" class="form-control" id="FirstNameedit" name="firstName" placeholder="First Name" required>
+                            <div class="invalid-feedback">
+                                First Name Harus diisi !!!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LastName">Last Name</label>
+                            <input type="text" class="form-control" id="LastNameedit" name="lastName" placeholder="Last Name" required>
+                            <div class="invalid-feedback">
+                                Last Name Harus diisi !!!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Phone">Phone</label>
+                            <input type="number" class="form-control" id="Phoneedit" name="phone" placeholder="08xxxxx" required>
+                            <div class="invalid-feedback">
+                                Nomor Telepon harus diisi !!!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="BirthDate">BirthDate</label>
+                            <input type="date" class="form-control" id="BirthDateedit" name="birthDate" placeholder="BirthDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" required>
+                            <div class="invalid-feedback">
+                                Tanggal Lahir Harus diisi !!!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Salary">Salary</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input type="number" class="form-control" name="salary" id="Salaryedit" required>
+                                <div class="invalid-feedback">
+                                    salary harus diisi !!!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="Gender">Gender</label>
+                            <select id="Genderedit" name="gender" class="custom-select mr-sm-1" required>
+                                <option value="">Choose...</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Gender harus diisi !!!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="Emailedit" required>
+                        <div class="invalid-feedback">
+                            Email harus diisi !!!
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-primary" id="btnAdd" onclick=" return Update();">Edit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

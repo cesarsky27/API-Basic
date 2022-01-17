@@ -63,5 +63,21 @@ namespace API.Base
             }
             return NotFound(new { status = HttpStatusCode.NotFound, result, message = "Data Gagal dihapus!" });
         }
+
+        //Coba-2
+        //[HttpPut("{key}")]
+        //public ActionResult Update (Entity entity)
+        //{
+        //    try
+        //    {
+        //        repository.Update(entity);
+        //        return Ok(new { status = HttpStatusCode.OK, message = "data berhasil diupdate" });
+        //    }
+        //    catch
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

@@ -20,7 +20,6 @@ namespace API.ViewModel
         public string Email { get; set; }
         public string Password { get; set; }
         public Gender Gender { get; set; }
-        public int EducationID { get; set; }
         public string Degree { get; set; }
         public float GPA { get; set; }
         public int UniversityID { get; set; }

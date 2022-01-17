@@ -52,9 +52,32 @@ namespace API.Repository
 
         public int Update(Entity entity)
         {
+            //Test
+            //if (entities == null)
+            //{
+            //    throw new ArgumentNullException("entity");
+            //}
             myContext.Entry(entity).State = EntityState.Modified;
             var result = myContext.SaveChanges();
             return result;
         }
+        //public int Update(Entity entity)
+        //{
+
+        //    myContext.Entry(entity).State = EntityState.Modified;
+        //    var result = 0;
+        //    try
+        //    {
+        //        myContext.SaveChanges();
+        //        result = 1;
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        result = 0;
+        //    }
+        //    return result;
+
+        //}
     }
 }
