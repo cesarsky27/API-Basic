@@ -452,3 +452,4 @@ F:\API\Client\bin\Debug\netcoreapp3.1\API.pdb
 F:\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Employees.cshtml.g.cs
 F:\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Accounts\Accounts.cshtml.g.cs
 F:\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutLogin.cshtml.g.cs
+F:\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Home\Unauthorized.cshtml.g.cs

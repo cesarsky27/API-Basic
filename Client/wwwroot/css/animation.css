@@ -1,0 +1,94 @@
+﻿
+/** {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: none;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background: #000000;
+    font-size: 14px;
+    line-height: 1;
+}
+
+label {
+    cursor: pointer;
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    background: transparent;
+    text-decoration: none;
+    color: #000;
+}
+
+input, select, button, textarea {
+    margin: 0;
+    font-size: 100%;
+}
+
+html, div, span, applet, object, iframe, h1,h2,h3,h4,h5,h6,p, blockquote, pre,
+a, abbr, acronym, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, input {
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+.top-header: before {
+    background-image: "";
+}
+
+.top-header: before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    background-repeat: repeat-x;
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.5;
+}
+*/
+/** {*/
+   /* background-color: #F7C31E;*/
+    /*padding-top: 50px;
+}*/
+h1.unauth {
+    margin: 200px 0 0 150px;
+    font-family: 'Poppins', sans-serif;
+    /*background-color: blanchedalmond;*/
+}
+
+p.forbidden {
+    font-size: 45px;
+    font-family: 'Poppins', sans-serif;
+    /*margin-left: 720px;*/
+    font-weight: bold;
+}
+
+p.forbidden1 {
+    font-size: 35px;
+    font-family: 'Poppins', sans-serif;
+   /* margin-left: 280px;*/
+}
+
+p.bigSize {
+    font-size: 100px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}

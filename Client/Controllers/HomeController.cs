@@ -27,6 +27,11 @@ namespace Client.Controllers
         {
             return View();
         }
+        [HttpGet("notfound/")]
+        public IActionResult Unauthorized()
+        {
+            return View("Unauthorized");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

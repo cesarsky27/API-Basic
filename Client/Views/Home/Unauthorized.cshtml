@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Unaothorized";
+    Layout = null;
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Unauthorized</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/animation.css" />
+</head>
+
+<body style="background-color: #FDE150">
+    <img src="~/Gambar/wizard1.png" align="left" alt="Alternate Text" />
+    <h1 class="unauth">YOU SHALL NOT PASS</h1>
+    <p class="bigSize">403</p>
+    <p class="forbidden1">
+        You don't have permission to access on this server. <br />
+        You will be redirected in <span id="time">5</span> seconds
+    </p>
+
+    <a href="/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Go to home page</a>
+</body>
+
+<script>
+    var seconds = 5;
+
+    window.onload = function () {
+        var timer = setInterval(function () {
+            if (seconds <= 0) {
+                document.getElementById("time").innerHTML = 0;
+                clearInterval(timer);
+            } else {
+                document.getElementById("time").innerHTML = seconds - 1;
+            }
+            seconds -= 1;
+        }, 1000);
+
+        setTimeout(function () {
+            window.location.href = '/Accounts';
+        }, seconds * 1000);
+    };
+</script>
+
